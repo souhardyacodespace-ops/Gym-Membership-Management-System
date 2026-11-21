@@ -1,0 +1,10 @@
+﻿node_modules/
+build/
+dist/
+*.log
+*.zip
+.DS_Store
+Thumbs.db
+PROJECT_REPORT_*
+report_template.html
+report_assets/

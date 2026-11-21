@@ -1,0 +1,22 @@
+{
+  "name": "gym-billing-management-app",
+  "version": "1.0.0",
+  "description": "Gym Membership & Billing Management Desktop Application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package:win": "electron-packager . \"Gym Billing Management\" --platform=win32 --arch=x64 --out=build --overwrite",
+    "package:linux": "electron-packager . \"Gym Billing Management\" --platform=linux --arch=x64 --out=build --overwrite",
+    "package:mac": "electron-packager . \"Gym Billing Management\" --platform=darwin --arch=x64 --out=build --overwrite",
+    "package:all": "electron-packager . \"Gym Billing Management\" --platform=win32,linux,darwin --arch=x64 --out=build --overwrite",
+    "build:exe": "npm run package:win",
+    "build:deb": "npm run package:linux",
+    "build:dmg": "npm run package:mac"
+  },
+  "author": "Souhardo",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^34.5.8",
+    "electron-packager": "^17.1.2"
+  }
+}

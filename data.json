@@ -1,0 +1,220 @@
+{
+  "settings": {
+    "gymName": "PowerFit Gym & Fitness Club",
+    "phone": "+880 1712-345678",
+    "address": "Dhanmondi, Dhaka, Bangladesh",
+    "currency": "৳",
+    "plans": [
+      {
+        "id": "monthly",
+        "name": "Monthly",
+        "durationMonths": 1,
+        "fee": 1500
+      },
+      {
+        "id": "3months",
+        "name": "3 Months",
+        "durationMonths": 3,
+        "fee": 4000
+      },
+      {
+        "id": "6months",
+        "name": "6 Months",
+        "durationMonths": 6,
+        "fee": 7500
+      },
+      {
+        "id": "yearly",
+        "name": "Yearly",
+        "durationMonths": 12,
+        "fee": 14000
+      }
+    ]
+  },
+  "members": [
+    {
+      "id": "MEM-1001",
+      "name": "Tanvir Ahmed",
+      "phone": "01711-223344",
+      "email": "tanvir@example.com",
+      "gender": "Male",
+      "startDate": "2026-11-01",
+      "plan": "Monthly",
+      "expiryDate": "2026-12-01",
+      "pricing": {
+        "baseFee": 1500,
+        "admissionFee": 500,
+        "addonFee": 200,
+        "subtotal": 2200,
+        "discount": 200,
+        "tax": 0,
+        "grandTotal": 2000,
+        "paid": 2000,
+        "due": 0,
+        "paymentMethod": "Cash"
+      },
+      "createdAt": "2026-11-01T10:00:00.000Z"
+    },
+    {
+      "id": "MEM-1002",
+      "name": "Nafisa Rahman",
+      "phone": "01819-887766",
+      "email": "nafisa@example.com",
+      "gender": "Female",
+      "startDate": "2026-11-15",
+      "plan": "3 Months",
+      "expiryDate": "2027-02-15",
+      "pricing": {
+        "baseFee": 4000,
+        "admissionFee": 500,
+        "addonFee": 0,
+        "subtotal": 4500,
+        "discount": 500,
+        "tax": 0,
+        "grandTotal": 4000,
+        "paid": 3000,
+        "due": 1000,
+        "paymentMethod": "bKash"
+      },
+      "createdAt": "2026-11-15T11:30:00.000Z"
+    },
+    {
+      "id": "MEM-1003",
+      "name": "Arifur Hassan",
+      "phone": "01912-334455",
+      "email": "arifur@example.com",
+      "gender": "Male",
+      "startDate": "2026-10-01",
+      "plan": "6 Months",
+      "expiryDate": "2027-04-01",
+      "pricing": {
+        "baseFee": 7500,
+        "admissionFee": 500,
+        "addonFee": 500,
+        "subtotal": 8500,
+        "discount": 1000,
+        "tax": 0,
+        "grandTotal": 7500,
+        "paid": 7500,
+        "due": 0,
+        "paymentMethod": "Card"
+      },
+      "createdAt": "2026-10-01T09:15:00.000Z"
+    },
+    {
+      "id": "MEM-1004",
+      "name": "Sadia Islam",
+      "phone": "01611-998877",
+      "email": "sadia@example.com",
+      "gender": "Female",
+      "startDate": "2026-09-01",
+      "plan": "Yearly",
+      "expiryDate": "2027-09-01",
+      "pricing": {
+        "baseFee": 14000,
+        "admissionFee": 0,
+        "addonFee": 1000,
+        "subtotal": 15000,
+        "discount": 2000,
+        "tax": 0,
+        "grandTotal": 13000,
+        "paid": 13000,
+        "due": 0,
+        "paymentMethod": "Bank Transfer"
+      },
+      "createdAt": "2026-09-01T14:20:00.000Z"
+    },
+    {
+      "id": "MEM-1005",
+      "name": "Mahmudul Haque",
+      "phone": "01722-556677",
+      "email": "mahmudul@example.com",
+      "gender": "Male",
+      "startDate": "2026-11-10",
+      "plan": "Monthly",
+      "expiryDate": "2026-12-10",
+      "pricing": {
+        "baseFee": 1500,
+        "admissionFee": 500,
+        "addonFee": 0,
+        "subtotal": 2000,
+        "discount": 0,
+        "tax": 0,
+        "grandTotal": 2000,
+        "paid": 1500,
+        "due": 500,
+        "paymentMethod": "Nagad"
+      },
+      "createdAt": "2026-11-10T16:00:00.000Z"
+    },
+    {
+      "id": "MEM-1006",
+      "name": "Farhana Yasmin",
+      "phone": "01555-112233",
+      "email": "farhana@example.com",
+      "gender": "Female",
+      "startDate": "2026-10-15",
+      "plan": "3 Months",
+      "expiryDate": "2027-01-15",
+      "pricing": {
+        "baseFee": 4000,
+        "admissionFee": 500,
+        "addonFee": 300,
+        "subtotal": 4800,
+        "discount": 300,
+        "tax": 0,
+        "grandTotal": 4500,
+        "paid": 4500,
+        "due": 0,
+        "paymentMethod": "bKash"
+      },
+      "createdAt": "2026-10-15T11:00:00.000Z"
+    },
+    {
+      "id": "MEM-1007",
+      "name": "Kamrul Ahsan",
+      "phone": "01822-445566",
+      "email": "kamrul@example.com",
+      "gender": "Male",
+      "startDate": "2026-08-01",
+      "plan": "Monthly",
+      "expiryDate": "2026-09-01",
+      "pricing": {
+        "baseFee": 1500,
+        "admissionFee": 500,
+        "addonFee": 0,
+        "subtotal": 2000,
+        "discount": 0,
+        "tax": 0,
+        "grandTotal": 2000,
+        "paid": 2000,
+        "due": 0,
+        "paymentMethod": "Cash"
+      },
+      "createdAt": "2026-08-01T10:00:00.000Z"
+    },
+    {
+      "id": "MEM-1008",
+      "name": "Rashed Chowdhury",
+      "phone": "01933-778899",
+      "email": "rashed@example.com",
+      "gender": "Male",
+      "startDate": "2026-11-05",
+      "plan": "6 Months",
+      "expiryDate": "2027-05-05",
+      "pricing": {
+        "baseFee": 7500,
+        "admissionFee": 500,
+        "addonFee": 500,
+        "subtotal": 8500,
+        "discount": 500,
+        "tax": 0,
+        "grandTotal": 8000,
+        "paid": 5000,
+        "due": 3000,
+        "paymentMethod": "Card"
+      },
+      "createdAt": "2026-11-05T12:00:00.000Z"
+    }
+  ]
+}

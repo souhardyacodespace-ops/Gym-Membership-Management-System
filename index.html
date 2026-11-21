@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gym Membership & Fast Billing System</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Main Container -->
+  <div class="app-layout">
+    
+    <!-- Sidebar / Brand -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+          <h2 id="brandGymName">PowerFit Gym</h2>
+          <span>Billing & Member Desk</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <button class="nav-item active" id="tabDashboard" onclick="switchTab('dashboard')">
+          <span class="icon">📊</span> Dashboard & Billing
+        </button>
+        <button class="nav-item" id="tabMembers" onclick="switchTab('members')">
+          <span class="icon">🏋️‍♂️</span> Member Directory
+        </button>
+        <button class="nav-item" id="tabNewMember" onclick="switchTab('new-member')">
+          <span class="icon">➕</span> Add Member & Bill
+        </button>
+        <button class="nav-item" id="tabSettings" onclick="switchTab('settings')">
+          <span class="icon">⚙️</span> Rates & Settings
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="database-badge">
+          <span class="pulse"></span> JSON Database Active
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Bar -->
+      <header class="top-bar">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="globalSearchInput" placeholder="Quick search member name, phone or invoice..." oninput="handleGlobalSearch(this.value)">
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-primary" onclick="openNewMemberForm()">
+            <span>➕</span> New Member / Bill
+          </button>
+        </div>
+      </header>
+
+      <!-- VIEW: DASHBOARD & SUMMARY -->
+      <section id="viewDashboard" class="view-panel active">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon purple">👥</div>
+            <div class="stat-info">
+              <span class="stat-label">Total Members</span>
+              <h3 id="statTotalMembers">0</h3>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">💰</div>
+            <div class="stat-info">
+              <span class="stat-label">Total Billed</span>
+              <h3 id="statTotalRevenue">৳ 0</h3>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue">💳</div>
+            <div class="stat-info">
+              <span class="stat-label">Paid Received</span>
+              <h3 id="statPaidRevenue">৳ 0</h3>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon amber">⏳</div>
+            <div class="stat-info">
+              <span class="stat-label">Total Due / Balance</span>
+              <h3 id="statTotalDue">৳ 0</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Records & Quick Calc Table -->
+        <div class="content-card">
+          <div class="card-header">
+            <div>
+              <h3>Recent Billing & Members</h3>
+              <p>Instant bill calculation and membership validity tracking</p>
+            </div>
+            <div class="filter-group">
+              <select id="filterPlan" onchange="applyFilters()">
+                <option value="all">All Plans</option>
+                <option value="Monthly">Monthly</option>
+                <option value="3 Months">3 Months</option>
+                <option value="6 Months">6 Months</option>
+                <option value="Yearly">Yearly</option>
+              </select>
+              <select id="filterStatus" onchange="applyFilters()">
+                <option value="all">All Status</option>
+                <option value="Active">Active</option>
+                <option value="Expired">Expired</option>
+                <option value="Due">Payment Due</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Invoice ID</th>
+                  <th>Member Name</th>
+                  <th>Phone Number</th>
+                  <th>Plan & Validity</th>
+                  <th>Bill Total</th>
+                  <th>Paid / Due</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="memberTableBody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+            <div id="emptyState" class="empty-state" style="display:none;">
+              <p>No members or billing records found.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: ADD / EDIT MEMBER & BILL -->
+      <section id="viewNewMember" class="view-panel">
+        <div class="form-container">
+          <div class="form-header">
+            <h2 id="formTitle">Add Gym Member & Calculate Bill</h2>
+            <p>Fast, automated calculations: Plan base fee, admissions, discounts, taxes, and validity dates</p>
+          </div>
+
+          <form id="memberBillingForm" onsubmit="handleFormSubmit(event)">
+            <input type="hidden" id="editMemberId">
+
+            <div class="form-grid">
+              <!-- Left Column: Member Info -->
+              <div class="form-section">
+                <h4 class="section-title">👤 Member Information</h4>
+                
+                <div class="form-group">
+                  <label for="memberName">Member Name <span class="required">*</span></label>
+                  <input type="text" id="memberName" required placeholder="e.g. Tanvir Ahmed">
+                </div>
+
+                <div class="form-group">
+                  <label for="memberPhone">Phone Number <span class="required">*</span></label>
+                  <input type="tel" id="memberPhone" required placeholder="e.g. 01712-345678">
+                </div>
+
+                <div class="form-group">
+                  <label for="memberEmail">Email Address (Optional)</label>
+                  <input type="email" id="memberEmail" placeholder="e.g. tanvir@gmail.com">
+                </div>
+
+                <div class="form-group">
+                  <label for="memberGender">Gender</label>
+                  <select id="memberGender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="startDate">Start Date <span class="required">*</span></label>
+                    <input type="date" id="startDate" required onchange="recalculateBill()">
+                  </div>
+                  <div class="form-group col">
+                    <label for="membershipPlan">Membership Plan <span class="required">*</span></label>
+                    <select id="membershipPlan" required onchange="handlePlanSelection()">
+                      <option value="Monthly" data-fee="1500" data-months="1">Monthly (1 Month)</option>
+                      <option value="3 Months" data-fee="4000" data-months="3">3 Months (Quarterly)</option>
+                      <option value="6 Months" data-fee="7500" data-months="6">6 Months (Half-Yearly)</option>
+                      <option value="Yearly" data-fee="14000" data-months="12">Yearly (Annual)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Computed Expiry Date</label>
+                  <input type="text" id="computedExpiryDate" readonly class="readonly-field" value="-">
+                </div>
+              </div>
+
+              <!-- Right Column: Fast Bill Calculator -->
+              <div class="form-section billing-calculator-box">
+                <h4 class="section-title">⚡ Instant Bill Calculation</h4>
+                
+                <div class="calc-row">
+                  <span>Base Plan Fee:</span>
+                  <div class="calc-input-wrapper">
+                    <span class="currency-symbol">৳</span>
+                    <input type="number" id="baseFee" min="0" value="1500" oninput="recalculateBill()">
+                  </div>
+                </div>
+
+                <div class="calc-row">
+                  <span>Admission / Registration Fee:</span>
+                  <div class="calc-input-wrapper">
+                    <span class="currency-symbol">৳</span>
+                    <input type="number" id="admissionFee" min="0" value="500" oninput="recalculateBill()">
+                  </div>
+                </div>
+
+                <div class="calc-row">
+                  <span>Locker / Personal Trainer Fee:</span>
+                  <div class="calc-input-wrapper">
+                    <span class="currency-symbol">৳</span>
+                    <input type="number" id="addonFee" min="0" value="0" oninput="recalculateBill()">
+                  </div>
+                </div>
+
+                <div class="calc-row highlight">
+                  <span>Subtotal:</span>
+                  <strong id="displaySubtotal">৳ 2,000</strong>
+                </div>
+
+                <div class="calc-row">
+                  <span>Discount (৳ or %):</span>
+                  <div class="discount-inputs">
+                    <input type="number" id="discountValue" min="0" value="0" oninput="recalculateBill()" placeholder="0">
+                    <select id="discountType" onchange="recalculateBill()">
+                      <option value="flat">৳ Flat</option>
+                      <option value="percent">% Percent</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="calc-row">
+                  <span>Tax / VAT (%):</span>
+                  <div class="calc-input-wrapper">
+                    <input type="number" id="taxPercent" min="0" max="100" value="0" oninput="recalculateBill()">
+                    <span class="unit-symbol">%</span>
+                  </div>
+                </div>
+
+                <div class="calc-divider"></div>
+
+                <div class="calc-total-box">
+                  <div class="total-label">Grand Total Bill</div>
+                  <div class="total-amount" id="displayGrandTotal">৳ 2,000</div>
+                </div>
+
+                <div class="calc-row payment-status-row">
+                  <span>Amount Paid Now:</span>
+                  <div class="calc-input-wrapper">
+                    <span class="currency-symbol">৳</span>
+                    <input type="number" id="amountPaid" min="0" value="2000" oninput="recalculateBill()">
+                  </div>
+                </div>
+
+                <div class="calc-row payment-status-row">
+                  <span>Payment Method:</span>
+                  <select id="paymentMethod">
+                    <option value="Cash">Cash</option>
+                    <option value="bKash">bKash</option>
+                    <option value="Nagad">Nagad</option>
+                    <option value="Card">Bank Card</option>
+                  </select>
+                </div>
+
+                <div class="calc-row due-row" id="dueRow">
+                  <span>Due Balance:</span>
+                  <strong id="displayDueAmount" class="badge-due">৳ 0</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" onclick="switchTab('dashboard')">Cancel</button>
+              <button type="submit" class="btn btn-success btn-lg">💾 Save Member & Print Receipt</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- VIEW: SETTINGS & RATES -->
+      <section id="viewSettings" class="view-panel">
+        <div class="form-container">
+          <div class="form-header">
+            <h2>Gym Configuration & Default Rates</h2>
+            <p>Customize your gym details, currency, and package rates saved to JSON</p>
+          </div>
+
+          <form id="settingsForm" onsubmit="handleSettingsSubmit(event)">
+            <div class="form-grid">
+              <div class="form-section">
+                <h4 class="section-title">🏢 Gym Details</h4>
+                <div class="form-group">
+                  <label for="setGymName">Gym / Business Name</label>
+                  <input type="text" id="setGymName" required>
+                </div>
+                <div class="form-group">
+                  <label for="setGymPhone">Contact Phone</label>
+                  <input type="text" id="setGymPhone" required>
+                </div>
+                <div class="form-group">
+                  <label for="setGymAddress">Gym Address</label>
+                  <input type="text" id="setGymAddress">
+                </div>
+                <div class="form-group">
+                  <label for="setCurrency">Currency Symbol</label>
+                  <input type="text" id="setCurrency" value="৳">
+                </div>
+              </div>
+
+              <div class="form-section">
+                <h4 class="section-title">🏷️ Default Plan Pricing</h4>
+                <div class="form-group">
+                  <label>Monthly Plan (৳)</label>
+                  <input type="number" id="planMonthly" min="0" value="1500">
+                </div>
+                <div class="form-group">
+                  <label>3 Months Plan (৳)</label>
+                  <input type="number" id="plan3Months" min="0" value="4000">
+                </div>
+                <div class="form-group">
+                  <label>6 Months Plan (৳)</label>
+                  <input type="number" id="plan6Months" min="0" value="7500">
+                </div>
+                <div class="form-group">
+                  <label>Yearly Plan (৳)</label>
+                  <input type="number" id="planYearly" min="0" value="14000">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Save Settings</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- INVOICE / RECEIPT MODAL FOR PRINTING -->
+  <div id="invoiceModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Gym Membership Receipt & Bill</h3>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="invoicePrintArea">
+        <!-- Rendered dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Print Receipt</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastNotification" class="toast"></div>
+
+  <!-- External JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
